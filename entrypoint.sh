@@ -43,6 +43,10 @@ usermod -aG administrators "$USERNAME" 2>/dev/null || true
 usermod -aG docker "$USERNAME" 2>/dev/null || true
 usermod -aG sudo "$USERNAME" 2>/dev/null || true
 
+# Unlock user account for SSH key authentication
+# (accounts without passwords are locked by default)
+passwd -u "$USERNAME" 2>/dev/null || true
+
 # Configure passwordless sudo
 echo "$USERNAME ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/"$USERNAME"
 chmod 0440 /etc/sudoers.d/"$USERNAME"
