@@ -73,6 +73,27 @@ fi
 # Ensure home directory ownership
 chown "$USERNAME:$USER_GID" "/home/$USERNAME"
 
+# Create default .bashrc if it doesn't exist
+if [ ! -f "/home/$USERNAME/.bashrc" ]; then
+    cat > "/home/$USERNAME/.bashrc" <<'BASHRC_EOF'
+# DevShell .bashrc
+export DOCKER_API_VERSION=1.43
+export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+
+# Aliases
+alias ll="ls -alh"
+alias dc="docker compose"
+
+# Prompt
+PS1="\[\e[32m\]\u@devshell\[\e[0m\]:\[\e[34m\]\w\[\e[0m\]\$ "
+
+# Welcome message
+echo "DevShell - Ubuntu 24.04"
+echo "NAS: /volume1 | Docker: API v1.43"
+BASHRC_EOF
+    chown "$USERNAME:$USER_GID" "/home/$USERNAME/.bashrc"
+fi
+
 # Display configuration summary
 echo "=== Configuration Summary ==="
 echo "User: $(id "$USERNAME")"
